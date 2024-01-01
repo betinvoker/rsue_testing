@@ -18,10 +18,10 @@ git commit -m "Суть изменений"
 git push origin dev
 
 #   Переключение между ветками (main/dev)
-git checkout ветка
+git checkout main
 
 #   Слияние веток (перенос изменений с dev в main)
-
+git merge dev
 
 #   Создание виртуальной среды
 pip -m venv .env
@@ -36,4 +36,4 @@ pip freeze > requirements.txt
 pip install -r requirements.txt
 
 #   Запуск сервера
-python -m http.server --bind 127.0.0.1 8000
+python app.py

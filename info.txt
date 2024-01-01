@@ -2,6 +2,27 @@
 # Клонирование репозитрия проекта на локальную машину
 git clone https://github.com/betinvoker/rsue_testing.git
 
+#  Задается параметр имени пользователя
+git config --global user.username "имя пользователя из github"
+
+#  Задается параметр email пользователя
+git config --global user.email "email пользователя из github"
+
+#   Фиксация изменений, которые войдут в commit(все)
+git add .
+
+#   Создание коммита
+git commit -m "Суть изменений"
+
+#   Запись коммита в удаленный репозиторий (github) на ветку разработки
+git push origin dev
+
+#   Переключение между ветками (main/dev)
+git checkout ветка
+
+#   Слияние веток (перенос изменений с dev в main)
+
+
 #   Создание виртуальной среды
 pip -m venv .env
 

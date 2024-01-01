@@ -1,0 +1,18 @@
+# Все комманды нужно запускать из терминала BASH
+# Клонирование репозитрия проекта на локальную машину
+git clone https://github.com/betinvoker/rsue_testing.git
+
+#   Создание виртуальной среды
+pip -m venv .env
+
+#   Запуск виртуальной среды
+sourse .env/Scripts/activate
+
+#   Создание файла с информацией об установленных библиотеках в виртуальной среде 
+pip freeze > requirements.txt
+
+#   Установка нужных библиотек из requirements.txt
+pip install -r requirements.txt
+
+#   Запуск сервера
+python -m http.server --bind 127.0.0.1 8000

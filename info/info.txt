@@ -24,10 +24,10 @@ git checkout main
 git merge dev
 
 #   Создание виртуальной среды
-pip -m venv .env
+pip -m venv env
 
 #   Запуск виртуальной среды
-sourse .env/Scripts/activate
+sourse env/Scripts/activate
 
 #   Создание файла с информацией об установленных библиотеках в виртуальной среде 
 pip freeze > requirements.txt
@@ -37,3 +37,13 @@ pip install -r requirements.txt
 
 #   Запуск сервера
 python app.py
+
+#   Создание БД в SQLite
+#   Запуск консоли python
+python
+#   Импорт переменныйх app и db в приложение app
+from app import app, db
+#   Обращаемся к контексту приложения
+app.app_context().push()
+#   Создание БД в папке instance
+db.create_all()

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Создание тестов
+{% endblock %}
+
+{% block body %}
+<div class="row">
+    <h1>Создать тест</h1>
+</div>
+
+<div class="row">
+    <div class="card">
+        <div class="card-body">
+            <form method="POST" class="form-control">
+                <div class="mb-3">
+                    <label for="inputNameTest" class="form-label col-form-label-lg">Введите название теста</label>
+                    <input type="text" id="inputNameTest" name="name" class="form-control" placeholder="Установлено ограничение. Число символов не должно привышать 1000 символов.">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlTextareaDescriptionTest" class="form-label col-form-label-lg">Введите описание теста</label>
+                    <textarea class="form-control" id="exampleFormControlTextareaDescriptionTest" name="description" rows="3" placeholder="Заполнять не обязательно, но желательно."></textarea>
+                </div>
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-outline-success">Далее</button>
+                    <a href="/" type="button" class="btn btn-outline-danger">Отменить</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

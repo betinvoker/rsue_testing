@@ -25,6 +25,7 @@
                     <th scope="col">Название</th>
                     <th scope="col">Кол-во вопросов</th>
                     <th scope="col">Автор</th>
+                    <th scope="col">Дата создания</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,9 +33,26 @@
                 <tr>
                     <td scope="row">{{ test.id }}</td>
                     <td>{{ test.name }}</td>
-                    <td>{{ test.course }}</td>
-                    <td>{{ test.year_study }}</td>
+                    <td>
+                        {% for key, value in count_quests.items() %}
+                            {% if test.id == key %}
+                                {{ value }}
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% for key, value in users.items() %}
+                            {% if test.id_author == key %}
+                                {{ value }}
+                            {% endif %}
+                        {% else %}
+                            0
+                        {% endfor %}
+                    </td>
+                    <td>{{ test.create_date }}</td>
                 </tr>
+                {% else %}
+                    <p>Пока пусто!</p>
                 {% endfor %}
             </tbody>
         </table>

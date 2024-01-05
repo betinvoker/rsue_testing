@@ -71,12 +71,12 @@ class Result_testing(db.Model):
 
 @app.route("/")
 def index():
-    tests = Test.query.order_by(Test.create_date.desc()).limit(20).all()
+    tests = Test.query.order_by(Test.create_date.desc()).limit(100).all()
     dictUserLogin, dictCountQuests = {},{}
     for test in tests:
         count_quest = Quest.query.filter_by(id_test=test.id).count()
         user = User.query.get(test.id_author).login
-        
+
         dictUserLogin.setdefault(test.id, user)
         dictCountQuests.setdefault(test.id, count_quest)
 
@@ -130,7 +130,45 @@ def creatingQuest():
 
 @app.route("/my_tests")
 def myTests():
-    return render_template('my_tests.html')
+    user = User.query.get(1)
+    tests = Test.query.filter_by(id_author=user.id).order_by(Test.create_date.desc()).all()
+    quests = db.session.query(
+        Quest.id,
+        Quest.question,
+        Quest.count_responses,
+        Quest.id_test,
+        Quest.create_date).join(Test, Quest.id_test == Test.id).all()
+
+    return render_template('my_tests.html', tests=tests, quests=quests)
+
+@app.route("/quest_create/<int:id>", methods=['POST','GET'])
+def questCreate(id):
+    if request.method == 'POST':
+        question = request.form['question']
+        count_responses = request.form['count_responses']
+        quest = Quest(question=question, count_responses=count_responses, id_test=id, update_date=datetime(3000, 1, 1, 00, 00, 00))
+        
+        try:
+            db.session.add(quest)
+            db.session.commit()
+            return redirect('/my_tests')
+        except:
+            return 'Произошла ошибка. Данные не добавлены!' 
+    else:
+        return render_template('quest_create.html')
+
+@app.route("/quest_delete/<int:id>")
+def questDelete(id):
+    quest = Quest.query.get_or_404(id)
+    
+    try:
+        db.session.delete(quest)
+        db.session.commit()
+        return redirect('/my_tests')
+    except:
+        return "При удалении записи произошла ошибка!"
+
+
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=8000, debug=True)

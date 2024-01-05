@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Создание тестов
+{% endblock %}
+
+{% block body %}
+<div class="row">
+    <h1>Создать вопрос к тесту</h1>
+</div>
+
+<div class="row">
+    <div class="card">
+        <div class="card-body">
+            <form method="POST" class="form-control">
+                <div class="mb-3">
+                    <label for="exampleFormControlTextareaDescriptionQuest" class="form-label col-form-label-lg">Введите вопрос</label>
+                    <textarea class="form-control" id="exampleFormControlTextareaDescriptionQuest" name="question" rows="3" placeholder="Заполнять обязательно!"></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <div class="row">
+                        <label for="exampleFormControlTextareaDescriptionQuest" class="form-label col-form-label-lg">Сколько правильных ответов?</label>
+                    </div>
+                    
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="count_responses" id="countResponses1" value="O" checked>
+                        <label class="form-check-label" for="countResponses1">Один ответ.</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="count_responses" id="countResponses2" value="M">
+                        <label class="form-check-label" for="countResponses2">Несколько ответов.</label>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-outline-success">Далее</button>
+                    <a href="/" type="button" class="btn btn-outline-danger">Отменить</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

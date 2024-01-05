@@ -8,4 +8,54 @@
 <div class="row">
     <h1>Мои тесты</h1>
 </div>
+
+<div class="row">
+    {% for test in tests %}
+    <div class="card card-margin-bottom-20">
+        <div class="card-body">
+            <h3>ID {{ test.id }}. Тест: {{ test.name }}</h3>
+            <div class="table-responsive">
+                <table class="table table-hover table-sm">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Вопрос</th>
+                            <th scope="col">Кол-во вариантов</th>
+                            <th scope="col">Изиенить вопрос</th>
+                            <th scope="col">Удалить вопрос</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for quest in quests %}
+                            {% if test.id == quest.id_test %}
+                        <tr>
+                            <td scope="row">{{ quest.id }}</td>
+                            <td>{{ quest.question }}
+                                {% if quest.count_responses == 'O' %}
+                                <span class="badge text-bg-info">Один ответ</span>
+                                {% else %}
+                                <span class="badge text-bg-info">Несколько ответов</span>
+                                {% endif %}
+                            </td>    
+                            <td>0</td>
+                            <td><a type="button" href="#" class="btn btn-outline-success btn-sm">Изменить</a></td>
+                            <td><a type="button" href="{{ url_for('questDelete', id=quest.id) }}" class="btn btn-outline-danger btn-sm">Удалить</a></td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <a type="button" href="{{ url_for('questCreate', id=test.id) }}" class="btn btn-outline-success btn-sm">Добавить новый вопрос</a>
+        </div>
+    </div>
+    {% else %}
+    <div class="card card-margin-bottom-20">
+        <div class="card-body">
+            <h3>Пока пусто.</h3>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
 {% endblock %}

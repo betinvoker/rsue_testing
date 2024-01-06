@@ -25,6 +25,8 @@ git merge dev
 
 #   Создание виртуальной среды
 pip -m venv env
+#   Или
+python -m venv env
 
 #   Запуск виртуальной среды
 sourse env/Scripts/activate

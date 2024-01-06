@@ -92,21 +92,11 @@ def creatingTest():
         test = Test(name=name, description=description, id_author=1, update_date=datetime(3000, 1, 1, 00, 00, 00))
 
         try:
-            if 'id_test' in session:
-                session['id_test'] = session.get('id_test') + 1
-                session.modified = True
-            else:
-                session['id_test'] = max_id_test + 1
-                session.modified = True
-
-            print(session.get('id_test'))
-
             db.session.add(test)
             db.session.commit()
 
             return redirect('/creating_quest')
         except:
-            print(session['id_test'])
             return 'Произошла ошибка. Данные не добавлены!'
     else:
         return render_template('creating_test.html')

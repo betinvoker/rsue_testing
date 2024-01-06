@@ -6,7 +6,7 @@
 
 {% block body %}
 <div class="row">
-    <h1>Мои тесты</h1>
+    <h1>&#9829; Мои тесты</h1>
 </div>
 
 <div class="row">
@@ -14,6 +14,7 @@
     <div class="card card-margin-bottom-20">
         <div class="card-body">
             <h3>ID {{ test.id }}. Тест: {{ test.name }}</h3>
+            <p>Описание: {{ test.description }}</p>
             <div class="table-responsive">
                 <table class="table table-hover table-sm">
                     <thead>
@@ -21,6 +22,7 @@
                             <th scope="col">#</th>
                             <th scope="col">Вопрос</th>
                             <th scope="col">Кол-во вариантов</th>
+                            <th scope="col">Добавить вариант ответа</th>
                             <th scope="col">Изиенить вопрос</th>
                             <th scope="col">Удалить вопрос</th>
                         </tr>
@@ -32,13 +34,20 @@
                             <td scope="row">{{ quest.id }}</td>
                             <td>{{ quest.question }}
                                 {% if quest.count_responses == 'O' %}
-                                <span class="badge text-bg-info">Один ответ</span>
+                                <span class="badge text-bg-warning">Один ответ</span>
                                 {% else %}
-                                <span class="badge text-bg-info">Несколько ответов</span>
+                                <span class="badge text-bg-warning">Несколько ответов</span>
                                 {% endif %}
                             </td>    
-                            <td>0</td>
-                            <td><a type="button" href="#" class="btn btn-outline-success btn-sm">Изменить</a></td>
+                            <td>
+                                {% for key, value in responses.items() %}
+                                    {% if quest.id == key %}
+                                        {{ value }}
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td><a type="button" href="{{ url_for('responseCreate', id=quest.id) }}" class="btn btn-outline-info btn-sm">Добавить ответ</a></td>
+                            <td><a type="button" href="{{ url_for('questUpdate', id=quest.id) }}" class="btn btn-outline-success btn-sm">Изменить</a></td>
                             <td><a type="button" href="{{ url_for('questDelete', id=quest.id) }}" class="btn btn-outline-danger btn-sm">Удалить</a></td>
                             {% endif %}
                         </tr>

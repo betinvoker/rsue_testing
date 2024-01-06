@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Изменение ответа к вопросу {{ quest.id }}
+{% endblock %}
+
+{% block body %}
+<div class="row">
+    <h1>
+        &#9830; Изменить ответ к вопросу "{{ quest.question }}"
+        {% if quest.count_responses == 'O' %}
+        <span class="badge text-bg-warning">Один ответ</span>
+        {% else %}
+        <span class="badge text-bg-warning">Несколько ответов</span>
+        {% endif %}
+    </h1>
+</div>
+
+<div class="row">
+    <div class="card">
+        <div class="card-body">
+            <form method="POST" class="form-control">
+                <div class="mb-3">
+                    <label for="exampleFormControlTextareaResponse" class="form-label col-form-label-lg">Введите ответ</label>
+                    <textarea class="form-control" id="exampleFormControlTextareaResponse" name="response" rows="3" placeholder="Заполнять обязательно!">{{ resp.response }}</textarea>
+                </div>
+
+                <div class="mb-3">
+                    <div class="form-floating">
+                        <select class="form-select" id="floatingSelect" name="count_point" aria-label="Floating label select example">
+                          <option value="{{ resp.count_point }}" selected>{{ resp.count_point }} баллов.</option>
+                          <option value="0">0 баллов.</option>
+                          <option value="1">1 балл.</option>
+                          <option value="2">2 балла.</option>
+                          <option value="3">3 балла.</option>
+                          <option value="4">4 балла.</option>
+                          <option value="5">5 баллов.</option>
+                          <option value="6">6 баллов.</option>
+                          <option value="7">7 баллов.</option>
+                          <option value="8">8 баллов.</option>
+                          <option value="9">9 баллов.</option>
+                          <option value="10">10 баллов.</option>
+                        </select>
+                        <label for="floatingSelect">Введите количество баллов за выбор этого варианта ответа</label>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-outline-success">Изменить ответ</button>
+                    <a href="{{ url_for('myTests') }}" type="button" class="btn btn-outline-danger">Отменить</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

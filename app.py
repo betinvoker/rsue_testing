@@ -138,8 +138,13 @@ def myTests():
         Quest.count_responses,
         Quest.id_test,
         Quest.create_date).join(Test, Quest.id_test == Test.id).all()
+    
+    dictCountResponses = {}
+    for quest in quests:
+        count_responses = Response.query.filter_by(id_quest=quest.id).count()
+        dictCountResponses.setdefault(quest.id, count_responses)
 
-    return render_template('my_tests.html', tests=tests, quests=quests)
+    return render_template('my_tests.html', tests=tests, quests=quests, responses=dictCountResponses)
 
 @app.route("/quest_create/<int:id>", methods=['POST','GET'])
 def questCreate(id):
@@ -156,6 +161,25 @@ def questCreate(id):
             return 'Произошла ошибка. Данные не добавлены!' 
     else:
         return render_template('quest_create.html')
+    
+@app.route("/quest_update/<int:id>", methods=['POST','GET'])
+def questUpdate(id):
+    quest = Quest.query.get_or_404(id)
+    test = Test.query.filter_by(id=quest.id_test).first()
+
+    if request.method == 'POST':
+        question = request.form['question']
+        count_responses = request.form['count_responses']
+        
+        try:
+            quest.question = question
+            quest.count_responses = count_responses
+            db.session.commit()
+            return redirect('/my_tests')
+        except:
+            return 'Произошла ошибка. Данные не изменены!' 
+    else:
+        return render_template('quest_update.html', test=test, quest=quest)
 
 @app.route("/quest_delete/<int:id>")
 def questDelete(id):
@@ -168,6 +192,53 @@ def questDelete(id):
     except:
         return "При удалении записи произошла ошибка!"
 
+@app.route("/create_response/<int:id>", methods=['POST','GET'])
+def responseCreate(id):
+    quest = Quest.query.get_or_404(id)
+    responses = Response.query.filter_by(id_quest=id).order_by(db.desc(Response.create_date)).all()
+    
+    sum_pounts = 0
+    for response in responses:
+        sum_pounts += response.count_point
+
+    if request.method == 'POST':
+        response = request.form['response']
+        count_point = request.form['count_point']
+
+        date = Response(response=response, count_point=count_point, id_quest=id, update_date=datetime(3000, 1, 1, 00, 00, 00))
+        
+        try:
+            db.session.add(date)
+            db.session.commit()
+            return redirect('/my_tests')
+        except:
+            return 'Произошла ошибка. Данные не добавлены!' 
+    else:
+        return render_template('create_response.html', quest=quest, responses=responses, sum_pounts = sum_pounts)
+    
+@app.route("/update_response/<int:id>", methods=['POST','GET'])
+def responseUpdate(id):
+    resp = Response.query.get_or_404(id)
+    quest = Quest.query.filter_by(id=resp.id_quest)
+    responses = Response.query.filter_by(id_quest=id).order_by(db.desc(Response.create_date)).all()
+    
+    sum_pounts = 0
+    for response in responses:
+        sum_pounts += response.count_point
+
+    if request.method == 'POST':
+        response = request.form['response']
+        count_point = request.form['count_point']
+        
+        try:
+            resp.response = response
+            resp.count_point = count_point
+            db.session.commit()
+            return redirect('/my_tests')
+        except:
+            return 'Произошла ошибка. Данные не изменены!' 
+    else:
+        return render_template('update_response.html', quest=quest, resp=resp, responses=responses, sum_pounts = sum_pounts)
 
 
 if __name__ == '__main__':

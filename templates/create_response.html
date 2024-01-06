@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Создание тестов
+{% endblock %}
+
+{% block body %}
+<div class="row">
+    <h1>
+        &#9830; Создать ответ к вопросу "{{ quest.question }}"
+        {% if quest.count_responses == 'O' %}
+        <span class="badge text-bg-warning">Один ответ</span>
+        {% else %}
+        <span class="badge text-bg-warning">Несколько ответов</span>
+        {% endif %}
+    </h1>
+</div>
+
+<div class="row">
+    <div class="card">
+        <div class="card-body">
+            <form method="POST" class="form-control">
+                <div class="mb-3">
+                    <label for="exampleFormControlTextareaResponse" class="form-label col-form-label-lg">Введите ответ</label>
+                    <textarea class="form-control" id="exampleFormControlTextareaResponse" name="response" rows="3" placeholder="Заполнять обязательно!"></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <div class="form-floating">
+                        {% if (quest.count_responses == 'O' and sum_pounts <= 0 ) or (quest.count_responses == 'M') %}
+                        <select class="form-select" id="floatingSelect" name="count_point" aria-label="Floating label select example">
+                        {% else %}
+                        <select class="form-select" id="floatingSelect" name="count_point" aria-label="Floating label select example" disabled>
+                        {% endif %}
+                          <option value="0" selected>По умолчанию 0 баллов.</option>
+                          <option value="1">1 балл.</option>
+                          <option value="2">2 балла.</option>
+                          <option value="3">3 балла.</option>
+                          <option value="4">4 балла.</option>
+                          <option value="5">5 баллов.</option>
+                          <option value="6">6 баллов.</option>
+                          <option value="7">7 баллов.</option>
+                          <option value="8">8 баллов.</option>
+                          <option value="9">9 баллов.</option>
+                          <option value="10">10 баллов.</option>
+                        </select>
+                        <label for="floatingSelect">Введите количество баллов за выбор этого варианта ответа</label>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-outline-success">Добавить ответ</button>
+                    <a href="{{ url_for('myTests') }}" type="button" class="btn btn-outline-danger">Отменить</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <h4 class="padding-top-20">Уже добавленные ответы</h4>
+    <div class="table-responsive">
+        <table class="table table-hover table-sm">
+            <thead>
+                <tr>
+                    <th scope="col">#ID</th>
+                    <th scope="col">Вариант ответа</th>
+                    <th scope="col">Кол-во баллов</th>
+                    <th scope="col">Дата создания</th>
+                    <th scope="col">Изменить ответ</th>
+                    <th scope="col">Удалить ответ</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for response in responses %}
+                <tr>
+                    <td scope="row">{{ response.id }}</td>
+                    <td>{{ response.response }}</td>
+                    <td>{{ response.count_point }}</td>
+                    <td>{{ response.create_date.strftime('%d.%m.%Y') }}</td>
+                    <td><a type="button" href="{{ url_for('responseUpdate', id=response.id) }}" class="btn btn-outline-success btn-sm">Изменить</a></td>
+                    <td><a type="button" href="#" class="btn btn-outline-danger btn-sm">Удалить</a></td>
+                </tr>
+                {% else %}
+                    <p>Пока пусто!</p>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

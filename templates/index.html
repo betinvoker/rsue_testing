@@ -10,10 +10,12 @@
 </div>
 
 <div class="row">
-    <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Поиск тестов по названию и автору" aria-label="Поиск тестов по названию и автору" aria-describedby="button-addon2">
-        <button class="btn btn-outline-secondary" type="button" id="button-addon2">Поиск</button>
-    </div>
+    <form method="POST" class="form-control">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" name="tests_search" id="tests_search" placeholder="Поиск тестов по названию и автору" aria-label="Поиск тестов по названию и автору" aria-describedby="button-addon2">
+            <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Поиск</button>
+        </div>
+    </form>
 </div>
 
 <div class="row">

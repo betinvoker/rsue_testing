@@ -24,14 +24,10 @@
                     <label for="exampleFormControlTextareaResponse" class="form-label col-form-label-lg">Введите ответ</label>
                     <textarea class="form-control" id="exampleFormControlTextareaResponse" name="response" rows="3" placeholder="Заполнять обязательно!"></textarea>
                 </div>
-
+                
                 <div class="mb-3">
                     <div class="form-floating">
-                        {% if (quest.count_responses == 'O' and sum_pounts <= 0 ) or (quest.count_responses == 'M') %}
                         <select class="form-select" id="floatingSelect" name="count_point" aria-label="Floating label select example">
-                        {% else %}
-                        <select class="form-select" id="floatingSelect" name="count_point" aria-label="Floating label select example" disabled>
-                        {% endif %}
                           <option value="0" selected>По умолчанию 0 баллов.</option>
                           <option value="1">1 балл.</option>
                           <option value="2">2 балла.</option>

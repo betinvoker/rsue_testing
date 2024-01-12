@@ -69,23 +69,38 @@ class Result_testing(db.Model):
     update_date = db.Column(db.DateTime(timezone=True), onupdate=db.func.now())
 
 
-@app.route("/")
+@app.route("/", methods=['POST','GET'])
 def index():
-    tests = Test.query.order_by(Test.create_date.desc()).limit(100).all()
     dictUserLogin, dictCountQuests = {},{}
-    for test in tests:
-        count_quest = Quest.query.filter_by(id_test=test.id).count()
-        user = User.query.get(test.id_author).login
 
-        dictUserLogin.setdefault(test.id, user)
-        dictCountQuests.setdefault(test.id, count_quest)
+    if request.method == 'POST' and 'tests_search' in request.form:
+        tests_search = request.form['tests_search']
+        search = "%{}%".format(tests_search)
+        tests = Test.query.filter(Test.name.like(search)).all()
 
-    return render_template('index.html', tests=tests, users=dictUserLogin, count_quests=dictCountQuests)
+        for test in tests:
+            count_quest = Quest.query.filter_by(id_test=test.id).count()
+            user = User.query.get(test.id_author).login
+
+            dictUserLogin.setdefault(test.id, user)
+            dictCountQuests.setdefault(test.id, count_quest)
+
+        return render_template('index.html', tests=tests, users=dictUserLogin, count_quests=dictCountQuests, tests_search=tests_search)
+
+    else:
+        tests = Test.query.order_by(Test.create_date.desc()).limit(100).all()
+    
+        for test in tests:
+            count_quest = Quest.query.filter_by(id_test=test.id).count()
+            user = User.query.get(test.id_author).login
+
+            dictUserLogin.setdefault(test.id, user)
+            dictCountQuests.setdefault(test.id, count_quest)
+
+        return render_template('index.html', tests=tests, users=dictUserLogin, count_quests=dictCountQuests)
 
 @app.route("/creating_test", methods=['POST','GET'])
 def creatingTest():
-    max_id_test = db.session.query(db.func.max(Test.id)).scalar()
-
     if request.method == 'POST':
         name = request.form['name']
         description = request.form['description']
@@ -95,28 +110,11 @@ def creatingTest():
             db.session.add(test)
             db.session.commit()
 
-            return redirect('/creating_quest')
+            return redirect('/my_tests')
         except:
             return 'Произошла ошибка. Данные не добавлены!'
     else:
         return render_template('creating_test.html')
-    
-@app.route("/creating_quest", methods=['POST','GET'])
-def creatingQuest():
-    if request.method == 'POST':
-        question = request.form['question']
-        count_responses = request.form['count_responses']
-        quest = Quest(question=question, count_responses=count_responses, id_test=session.get('id_test'), update_date=datetime(3000, 1, 1, 00, 00, 00))
-        
-        try:
-            db.session.add(quest)
-            db.session.commit()
-            return redirect('/creating_quest')
-        except:
-            return 'Произошла ошибка. Данные не добавлены!' 
-    else:
-        return render_template('creating_quest.html')
-
 
 @app.route("/my_tests")
 def myTests():
@@ -192,6 +190,7 @@ def responseCreate(id):
         sum_pounts += response.count_point
 
     if request.method == 'POST':
+        print(request.form['response'], request.form['count_point'])
         response = request.form['response']
         count_point = request.form['count_point']
 
